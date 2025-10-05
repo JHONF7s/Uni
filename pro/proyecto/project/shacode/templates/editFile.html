@@ -1,0 +1,128 @@
+{% extends "layout.html" %}
+
+{% block title %}
+{% if modo == 'reader' %}
+    Read
+{% endif %}
+{% if modo == 'editor' or modo == 'owner' %}
+    Edit
+{% endif %}
+{% endblock %}
+
+{% block main %}
+{{ macros.render_sidebar() }}
+<div class="main-content">
+<textarea style="height:100%; width:100%;" id="editor">{{ content }}</textarea>
+<div id="presenceStatus" class="text-muted small"></div>
+
+<script>
+    const editor = CodeMirror.fromTextArea(document.getElementById('editor'), {
+        lineNumbers: true,
+        mode: "{{ mode_ }}",
+        theme: "dracula",
+        indentUnit: 4,
+        tabSize: 4,
+        autofocus: true
+    });
+    editor.setSize("100%", "100vh");
+
+
+    let isReadOnly = false;
+    if ("{{ modo }}" === "reader"){
+        isReadOnly = true;
+    }
+
+    //bloquea escritura
+    if (isReadOnly) {
+        editor.on("beforeChange", (instance, changeObj) => {
+        changeObj.cancel();
+
+    });
+  }
+
+
+
+    const socket = io();  // Asegúrate que Flask-SocketIO esté corriendo
+    const fileId = {{ file[0]["id"] }};
+
+
+    let debounceTimer;
+    const DEBOUNCE_DELAY = 600; // solo emitirá si se deja de escribir durante 1 seg
+
+    editor.on("keydown", () => {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => {
+            socket.emit("textUpdate", {
+                file_id: fileId,
+                content: editor.getValue(),
+                sender: socket.id
+            });
+        }, DEBOUNCE_DELAY);
+    });
+
+
+
+    // Escuchar cambios desde el servidor
+    socket.on("textUpdate", (data) => {
+        if (data.file_id === fileId && editor.getValue() !== data.content) {
+            const cursor = editor.getCursor();
+            const scrollInfo = editor.getScrollInfo();
+
+            editor.setValue(data.content);
+
+            editor.setCursor(cursor);
+            editor.scrollTo(scrollInfo.left, scrollInfo.top);
+        }
+    });
+
+    setInterval( () => {
+        fetch('/autosave/{{ file[0]["id"] }}', {
+            method: "POST",
+            headers: {"Content-type": "application/json"},
+            body: JSON.stringify({ content: editor.getValue() })
+            // esto permitira extraer los datos (contenido) desde py
+        });
+    }, 5000);
+
+
+
+        // Cuando abre el archivo
+    socket.emit("fileActivity", {
+        file_id: fileId,
+        user: "{{ user.username }}",
+        action: "{{ level }}" //
+    });
+
+    let writingTimer;
+    editor.on("keydown", () => {
+        socket.emit("fileActivity", {
+            file_id: fileId,
+            user: "{{ user.username }}",
+            action: "writing"
+        });
+
+        clearTimeout(writingTimer);
+        writingTimer = setTimeout(() => {
+            socket.emit("fileActivity", {
+                file_id: fileId,
+                user: "{{ user.username }}",
+                action: "editing"
+            });
+        }, 2000);
+    });
+
+    socket.on("fileActivity", (data) => {
+        if (data.file_id === fileId && data.user !== "{{ user.username }}") {
+            const statusMap = {
+                writing: "escribiendo...",
+                editing: "editando el archivo",
+                viewing: "viendo el archivo"
+            };
+            document.getElementById("presenceStatus").innerText = `${data.user} está ${statusMap[data.action]}`;
+        }
+    });
+</script>
+</div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,258 @@
+ ____  _            ____          _      
+/ ___|| |__   __ _ / ___|___   __| | ___ 
+\___ \| '_ \ / _` | |   / _ \ / _` |/ _ \
+ ___) | | | | (_| | |__| (_) | (_| |  __/
+|____/|_| |_|\__,_|\____\___/ \__,_|\___|
+
+
+En este archivo se estara abordando el tema de como correr la app shacode en un 
+local host, pero con acceso a todos los dispositivos en una red y como hacerla publica 
+gracias al poderoso ngrok (estaremos abordando mas herramientas de uso gratuito).
+
+Primero, hay que descargar el proyecto en el computador que se usara como servidor
+en un futuro se espera hacer una version del codigo virgen para que se obtenga desde la API
+y pueda acceder a su propias "nube".
+
+Hay una serie de pasos despues de hacer esto
+desde el terminal (preferiblemente linux)
+-----------------------------------------------------------------------------------------------------------------------------
+
+
+ENTORNO VIRTUAL
+
+
+------------------------------------------------------------------------------------------------------------------------------
+Primero crearemos un entorno virtual que permita ejecutar el proyecto con todos sus modulos o libreris y demas
+asi que se ejecutara 'sudo apt install python3.12-venv' esto descargara un modulo de python que se usa para crear entornos virtuales
+especialmente para proyectos de python, este espacio virtual aisla dependencias y paquetes necesarios del sistema principal
+ya que en proyectos muy grandes estos mismos paquetes pueden generar choques con otros o incluso otras versiones diferentes de 
+los mismo, entonces es importante crear un espacio aislado, ademas que apartir de aca podriamos crear uno por cada proyecto.
+
+Despues de descargar este modulo, ejecute 'python3 -m venv venv' esto lo que hace es crear un entorno virtual 
+la forma de crear uno es python3 -m venv <nombre del espacio>.
+
+Ahora para activar el entorno ejecute 'source venv/bin/activate' la forma general es 
+source <nombre del espacio>/bin/activate
+
+Despues de esto ya podemos instalar paquetes "pip install paquete"
+---------------------------------------------------------------------------------------------------------------------------------
+
+
+AHORA DENTRO DEL PROYECTO PARA SERVER PRIVADO
+
+
+---------------------------------------------------------------------------------------------------------------------------------
+Despues de entrar en el entorno virtual y estar en la carpeta del proyecto, vera un archivo "requirements.txt"
+aqui usted puede ver como seria su contenido 
+
+	cat requirements.txt 
+
+	cs50
+	Flask
+	Flask-Session
+	pytz
+	requests
+	Flask-SocketIO
+	Werkzeug
+
+Por convencion y mejor manejo de recursos esto es asi, asi que ahora ejecute 
+'pip install -r requirements.txt' para descargar todas estas dependencias
+
+En la version actual del proyecto no esta el paquete 'eventlet' dentro de requirements.txt
+asi que antes de ejecutar la app, ejecute: 
+
+	'pip install eventlet'
+----------------------------------------
+
+	(venv) jhonf7s@JF7ss:~/proyecto/project/shacode$ python app.py 
+
+Aqui usted puede ver un ejemplo de la linea de ejecucion, asegurese de (venv) que es el nombre del entorno aislado
+al ejecutar 'python app.py' esta ejecutando absolutamente toda la app
+no se usa 'flask run' ya que la aplicacion usa un servidor de tipo bidireccional y no tan solicitud-respuesta, esto significa que
+el usuario no necesariamente recibe datos si este envia una solicitud ya sea GET, POST... como pasa con HTTP o HTTPS, aqui el servidor tambien le puede 
+enviar datos al usuario o usuarios por medio de emit, esto se hizo por la necesidad que aborda el editor de codigo dinamimco y para
+la futura implementacion de un chat con ayuda de IA.
+
+Cuando ejecute app.py vera algo como:
+
+	INFO:  * Restarting with stat
+	WARNING:  * Debugger is active!
+	INFO:  * Debugger PIN: 874-268-494
+	(398975) wsgi starting up on http://0.0.0.0:5001
+
+Aqui es muy importante que sepa que la forma en como entre a la APP o se comunique con la API a partir de ahora podra variar bastante 
+dependiendo de muchos factores como configuraciones del router dentro de su red privada, o incluso si el puerto 5001 de su equipo 
+esta bloqueado, para esto habria que asegurarse o "liberarlo" usando. 
+
+'sudo ufw allow 5001' (o el numero de puerto que elija dentro de app.py en literalmente la ultima linea de codigo)
+
+o con 
+
+'sudo ufw allow 5001/tcp'
+
+Tenga en cuenta que cualquier error fuera de este mencionado puede estar relacionado con las configuraciones del router
+normalmente con ciertas limitaciones en como los usuarios dentro de una red privada se comunican entre si y de mas 
+aun asi esto es muy poco comun, solo se veria en lugares con redes accesibles donde se necesite mantener ciertos protocolos
+de seguridad para datos frente a usuarios maliciosos, por estas razones es raro que este sea un factor para algun error
+en una red domestica, pero no se descarta.
+
+Despues de esto, asegurese de ejecutar lo siguiente (en otra terminal):
+
+	'sudo netstat -tulpn | grep 5001'
+
+Si todo esta bien, tendra esta salida, si ve 0.0.0.0, todo esta bien como se espera
+si ve algo como "127.0.0.1:5001" posiblemente este ocurriendo un error silencioso en algun lugar ya que desde 
+la ejecucion de app.py se le especifica al sistema que el host sera 0.0.0.0 esto quiere decir que el servidor escuchara
+en todas en todas las interfaces de una red local o su internet domestico y no solo lo limita a que lo unico que se escuche
+sea la misma maquina donde se ejecuta el servidor, por esa razon no deberia de ser "127.0.0.1:5001" asi funcione para la maquina en si misma.
+
+Esta deberia de ser la salida: 
+
+	tcp        0      0 0.0.0.0:5001            0.0.0.0:*               ESCUCHAR    398975/python        
+   
+Ahora ya esta a un paso de hacerla accesible de forma privada en su red, ahora, vea que despues de ejecutar la app
+hay una salida que dice que la app esta corriendo en http://0.0.0.0:5001 esto no es literal, si lo pega en un navegador 
+ni si quiera va a abrir, esto lo unico que le dice a usted, es que se escuchara cualquier dispositivo dentro de la red en si misma
+pero hay que generar un link correcto, para esto, tendra que saber la direccion IP de la maquina en la que corrio el servidor
+y esta IP tiene que ser la que el router de asigno a su maquina, asi que para verlo:
+
+	Ejecute primero 'ifconfig' esto para ver su direccion IP dentro de una red privada, despues de esto vera una salida un poco grande
+	que podria asustarlo, pero wlan o wlo1 suele ser donde usted encuentre la IP, vea aqui un ejemplo de la salida completa	 
+	------------------------------------------------------------------------------
+	jhonf7s@JF7ss:~$ ifconfig
+	docker0: flags=4099<UP,BROADCAST,MULTICAST>  mtu 1500
+		inet 172.17.0.1  netmask 255.255.0.0  broadcast 172.17.255.255
+		ether 02:42:3b:6b:a2:13  txqueuelen 0  (Ethernet)
+		RX packets 0  bytes 0 (0.0 B)
+		RX errors 0  dropped 0  overruns 0  frame 0
+		TX packets 0  bytes 0 (0.0 B)
+		TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+	eno1: flags=4099<UP,BROADCAST,MULTICAST>  mtu 1500
+		ether ec:9a:74:5d:09:b2  txqueuelen 1000  (Ethernet)
+	        RX packets 0  bytes 0 (0.0 B)
+	        RX errors 0  dropped 0  overruns 0  frame 0
+	        TX packets 0  bytes 0 (0.0 B)
+	        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+	lo: flags=73<UP,LOOPBACK,RUNNING>  mtu 65536
+	        inet 127.0.0.1  netmask 255.0.0.0
+	        inet6 ::1  prefixlen 128  scopeid 0x10<host>
+	        loop  txqueuelen 1000  (Bucle local)
+	        RX packets 80500  bytes 24235362 (24.2 MB)
+	        RX errors 0  dropped 0  overruns 0  frame 0
+	        TX packets 80500  bytes 24235362 (24.2 MB)
+	        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+	virbr0: flags=4099<UP,BROADCAST,MULTICAST>  mtu 1500
+	        inet 192.168.122.1  netmask 255.255.255.0  broadcast 192.168.122.255
+	        ether 52:54:00:ff:31:78  txqueuelen 1000  (Ethernet)
+	        RX packets 0  bytes 0 (0.0 B)
+	        RX errors 0  dropped 0  overruns 0  frame 0
+	        TX packets 0  bytes 0 (0.0 B)
+	        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+	
+	wlo1: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
+	        inet 192.168.1.15  netmask 255.255.255.0  broadcast 192.168.1.255
+	        inet6 fe80::f8ca:de43:74ab:5e6b  prefixlen 64  scopeid 0x20<link>
+	        inet6 2800:e2:6f80:581:d96d:49e:15d0:591b  prefixlen 64  scopeid 0x0<global>
+	        inet6 2800:e2:6f80:581:9700:3c40:a894:dcda  prefixlen 64  scopeid 0x0<global>
+	        inet6 2800:e2:6f80:581::2  prefixlen 128  scopeid 0x0<global>
+	        ether 20:10:7a:12:87:90  txqueuelen 1000  (Ethernet)
+	        RX packets 106504  bytes 57338503 (57.3 MB)
+	        RX errors 0  dropped 0  overruns 0  frame 0
+	        TX packets 80177  bytes 21184787 (21.1 MB)
+	        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+	-------------------------------------------------------------------------------------
+	Si, es algo largo, pero solo nos interesa un numero, vea estas lineas:
+
+		wlo1: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
+			inet 192.168.1.15  netmask 255.255.255.0  broadcast 192.168.1.255
+	
+	Aqui indica que su IP es "192.168.1.15"
+
+Bueno, ya sabiendo su IP, recuerde que pensabamos que el link era http://0.0.0.0:5001, bueno, pues teniedo la IP de la maquina en la que
+corre el servirdor, entonces la URL seria:
+						http://192.168.1.15:5001
+Ahora si, entre por medio de un navegador, o comuniquese con la API si quiere por medio de este link.
+------------------------------------------------------------------------------------------------------------------------------------------
+
+
+AHORA SERVER PUBLICO CON HERRAMIENTAS
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+Herramienta 1
+_________________________________________________________________________________________________________________________________________
+
+Bueno, para esta parte espero que haya leido la anterior, ya que aqui hablaremos de la descarga de herramientas y su uso en consola
+para convertir nuestro server privado, en almenos uno al cual se pueda acceder desde cualquier lugar mientras el server este "abierto"
+
+Primero usemos ngrok, es facil de usar y cumple lo que promete, desde la consola ejecute lo siguiente para descargar:
+
+	wget https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-linux-amd64.tgz
+	tar -xvzf ngrok-v3-stable-linux-amd64.tgz
+	sudo mv ngrok /usr/local/bin/
+
+y despues:
+
+	ngrok version
+
+Despues de verificar la instalacion, haga  login en la pagina de ngrok, y en la parte de authtoken le daran una serie de caracteres
+copiela y peguela aqui 
+
+	ngrok config add-authtoken <aqui_va_el_token>
+
+Despues de que todo salga bien, haga el paso anterior de iniciar el servidor en su localhost y ejecute
+
+	ngrok http 5001
+
+y eso es todo, la salida sera algo como:
+
+	🐋 Create instant endpoints for local containers within Docker Desktop → https://ngrok.com/r/docker     
+                                                                                                        
+	Session Status                online                                                                    
+	Account                       Jhonf7s (Plan: Free)                                                      
+	Version                       3.26.0                                                                    
+	Region                        United States (us)                                                        
+	Latency                       97ms                                                                      
+	Web Interface                 http://127.0.0.1:4040                                                     
+	Forwarding                    https://227ac213c4fa.ngrok-free.app -> http://localhost:5001              
+                                                                                                        
+	Connections                   ttl     opn     rt1     rt5     p50     p90                               
+		                      9       2       0.01    0.00    90.23   5822.77                           
+                                                                                                        
+	HTTP Requests                                                                                           
+	-------------                                                                                           
+                                                                                                        
+	22:24:29.504 -29 GET  /static/favicon.ico           200 OK                                              
+	22:24:29.413 -29 GET  /static/I_heart_validator.png 200 OK                                              
+	22:24:29.197 -29 GET  /static/prueba.js             200 OK                                              
+	22:24:28.379 -28 GET  /static/styles.css            200 OK                                              
+	22:24:28.387 -28 GET  /static/prueba.js             200 OK                                              
+	22:24:28.979 -28 GET  /static/prueba.js             200 OK                                              
+	22:24:27.914 -27 GET  /                             200 OK                                              
+	22:24:25.008 -25 POST /autosave/72                  200 OK                                              
+	22:24:20.008 -20 POST /autosave/72                  200 OK                                              
+	22:24:15.031 -15 POST /autosave/72                  200 OK            
+
+Aqui el link publico https://227ac213c4fa.ngrok-free.app 
+cuando entre habra una alerta, ya que esta version gratis no es necesariamente para produccion
+ya que es un tunel al servidor en su maquina y no esta hecho para produccion real
+pero para un uso de la app entre amigos, o incluso para usted mismo es ideal, la version gratis
+tiene ciertas limitaciones, pero se iran documentando mas herramientas para usar como esta :)
+___________________________________________________________________________________________________________________________________________
+
+Herramienta 2
+---------------------------------------------------------------------------------------------------------------------------------------------
+
+
+herramientas nombradas/para usar:
+1. nglok
+2. Cloudflared Tunnel (Cloudflare)
+3. LocalTunnel
+4. Serveo
+5. Expose (BeyondCode)
+6. LocalXpose

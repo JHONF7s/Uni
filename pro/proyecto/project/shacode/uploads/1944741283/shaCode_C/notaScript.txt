@@ -1,0 +1,33 @@
+ ____            _       _       
+/ ___|  ___ _ __(_)_ __ | |_ ___ 
+\___ \ / __| '__| | '_ \| __/ __|
+ ___) | (__| |  | | |_) | |_\__ \
+|____/ \___|_|  |_| .__/ \__|___/
+
+
+como dato importante sin importar en donde se haya instalado el script
+
+1. muy importante que esten en el mismo direcorio los archivos de esta forma
+
+	para upload:
+		animacion.sh  arte2.txt  arte.txt  kReader.c  psReader.c  upload.sh
+	para download:
+		animacion.sh  arte2.txt  arte.txt  download.sh  kReader.c  psReader.c
+
+2. agregar un alias a los scripts importantes como upload.sh y download.sh 
+
+	Ejecute 'nano ~/.bashrc' y agrega las dos lineas de abajo
+	tenga en cuanta que esta ruta depende de donde esten guardados los archivos
+	siendo 'shaCodeUP' y 'shaCodeDOWN' dos carpetas con cualquier nombre donde usted
+	tenga los archivos el resta de la ruta ya depende de usted donde tenga estas carpetas.
+	
+	alias up="bash ~/Scripts/ejecutables/API/shaCodeUP/upload.sh"
+	alias down="bash ~/Scripts/ejecutables/API/shaCodeDOWN/download.sh"
+	
+	Esto en el archivo ~/.bashrc  y para cargarlo ejecute 'source ~/.bashrc'
+	elija el alias que quiera 
+
+NOTA: No hay que preocuparse por los demas archivos, desde que esten en el mismo
+directorio o carpeta, todo estara bien, internamente el script ya maneja sus respectivas
+rutas y punteros, cada uno de estos archivos es importante para la comunicacion adecuada con la API.
+

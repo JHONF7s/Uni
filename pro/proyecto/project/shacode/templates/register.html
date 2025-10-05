@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Register
+{% endblock %}
+
+{% block main %}
+<div class="container py-5 text-center" style="background-color: #2f3136;">
+    <h2 class="text-white"><strong>Register</strong></h2>
+    <hr class="border-light mx-auto" style="width: 800px;">
+
+    <div class="form-box shadow p-4 mx-auto mt-5 Cformulario">
+        <form action="/register" method="post">
+            <div class="mb-3">
+                <input class="form-control w-auto mx-auto bg-dark text-white shadow-sm border-purple" autocomplete="off" autofocus name="username" placeholder="Username" type="text" style="border: 2px solid #99c3ff;">
+            </div>
+            <div class="mb-3 position-relative">
+                <input id="rPassword" class="form-control w-auto mx-auto bg-dark text-white shadow-sm border-purple Cinput" name="password" placeholder="Password" type="password">
+                <button type="button" onclick="toggleVisibility('rPassword', 'eye1')" class="btn btn-sm btn-outline-light"
+                style="position: absolute; right: 30px; top: 50%; transform: translateY(-50%);">
+                    <span id=eye1>⊙ ‿ ⊙</span>
+                </button>
+            </div>
+            <div class="mb-3 position-relative">
+                <input id="rrPassword" class=" form-control w-auto mx-auto bg-dark text-white shadow-sm border-purple Cinput" name="confirmation" placeholder="Password (again)" type="password">
+                <button type="button" onclick="toggleVisibility('rrPassword', 'eye2')" class="btn btn-sm btn-outline-light"
+                style="position: absolute; right: 30px; top: 50%; transform: translateY(-50%)">
+                      <span id=eye2>⊙ ‿ ⊙</span>
+                </button>
+            </div>
+            <div class=>
+                <button class="btn btn-primary bg-dark border-purple Cbutton" type="submit">Register</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+

@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    New Name
+{% endblock %}
+
+{% block main %}
+{{ macros.render_sidebar() }}
+<div class="main-content">
+    <div class="container-fluid py-5 text-center" style="background-color: #2f3136;">
+         <h2 class=text-white><strong>New Name 𓇢𓆸</strong></h2>
+        <hr class="border-light mx-auto" style="width: 800px;">
+        <div class="bg-dark form-box mt-5 mx-auto Cformulario container-fluid py-5 text-center" style=" max-width: 500px;">
+            <h2 class=text-white>Your information</h2>
+            <ul class="list-group">
+                <li class="list-group-item text-white" style="background-color: #2f3136;"><strong>Name:</strong> {{ user[0]["username"] }}</li>
+                <li class="list-group-item text-white" style="background-color: #2f3136;"><strong>ID:</strong> {{ user[0]["id"] }}</li>
+            </ul>
+        </div>
+        <div class="bg-dark form-box mt-5 mx-auto Cformulario container-fluid py-5 text-center" style=" max-width: 500px;">
+            <form action="/name_c" method="post">
+                <div class="mb-3">
+                    <input autocomplete="off" autofocus class="form-control w-auto mx-auto bg-dark text-white shadow-sm border-purple Cinput" name="username" placeholder=" New Username" type="text">
+                </div>
+                <div class="mb-3 position-relative">
+                    <input id="nPassword" class="form-control w-auto mx-auto bg-dark text-white shadow-sm border-purple Cinput" name="password" placeholder="Password (to confirm)" type="password">
+                    <button type="button" onclick="toggleVisibility('nPassword', 'eye2')" class="btn btn-sm btn-outline-light"
+                    style="position: absolute; right: 30px; top: 50%; transform: translateY(-50%);">
+                        <span id="eye2">⊙ ‿ ⊙</span>
+                    </button>
+                </div>
+                <button class="btn btn-primary bg-dark border-purple Cbutton" type="submit">Confirm</button>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+{% endblock %}

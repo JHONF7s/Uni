@@ -1,0 +1,65 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    index
+{% endblock %}
+
+{% block main %}
+<!--  <div class="chat-container bg-dark">
+    <ul>
+      <li><button class="toggle-btn" id="toggleBtn"><</button></li>
+      <li><button class="toggle-btn" id="toggleBtn"><</button></li>
+    </ul>
+    <div class="sidebar" id="sidebar">
+      <ul>
+        <li># General</li>
+        <li># Música</li>
+         <li>
+                                <button class="btn btn-sm btn-outline-light" type="button" data-bs-toggle="collapse" data-bs-target="#juego"
+                                    style="height: 50px; max-width: 90px;">
+                                    Create your Files
+                                </button>
+                                <div class="collapse mt-2" id="juego">
+                                    <div class=" rounded p-2 shadow-sm small" style="background-color: #2f3136;">
+                                        <a class=" btn btn-sm btn-outline-light " href="/Cfolder">Create Folder</a>
+                                        <p></p>
+                                        <a class="btn btn-sm btn-outline-light " href="/Cfile">Create/upload File</a>
+
+                                    </div>
+                                </div>
+                            </li>
+
+                              <li>
+                                 <button class=" mt-3 btn btn-sm btn-outline-light" type="button" data-bs-toggle="collapse" data-bs-target="#drive"style="height: 50px; max-width: 90px;">
+                                    view your files
+                                </button>
+                                <div class="collapse mt-2" id="drive">
+                                    <div class=" rounded p-2 shadow-sm small" style="background-color: #2f3136;">
+                                        <a class="btn btn-sm btn-outline-light  " href="/drive">All your files</a>
+                                        <p></p>
+                                        <a class="btn btn-sm btn-outline-light " href="/shares">Shared files</a>
+
+                                    </div>
+                                </div>
+                            </li>
+
+        <li># Juegos</li>
+        {% for i in range(100) %}
+          <li>{{ i }}</li>
+          {% endfor %}
+      </ul>
+      <div id="resizer"></div>
+    </div>-->
+
+
+{{ macros.render_sidebar() }}
+    <div class="main-content">
+      <h2>Contenido</h2>
+      <p>Aquí va el contenido principal. Puedes escribir, ver mensajes, etc.</p>
+    </div>
+  </div>
+  <script src="/static/prueba.js"></script>
+
+{% endblock %}
+
+

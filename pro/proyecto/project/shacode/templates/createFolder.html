@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    upload
+{% endblock %}
+
+{% block main %}
+{{ macros.render_sidebar() }}
+<div class="main-content">
+    <div class="container-fluid py-5 text-center" style="background-color: #2f3136;">
+        <h2 class="text-white"><strong>Create a Folder</strong></h2>
+        <hr class="border-light mx-auto" style="width: 800px;">
+        <div class="form-box shadow p-4 mx-auto mt-5 Cformulario">
+            <form action="/Cfolder" method="post">
+                <h3 class="text-white"><strong>New folder <i class="bi bi-folder-plus"></i></strong></h3>
+                <hr class="border-light mx-auto">
+                <ul class="" style="list-style-type: none; padding-left: 0;">
+                    <li><input autocomplete="off" autofocus type="text" name="folder_name" placeholder="Name of your folder" class="form-control mx-auto w-auto bg-dark text-white shadow-sm border-purple Cinput mb-3" required></li>
+                    <li>
+                        <select name="parent_id" class="form-select mx-auto w-50 bg-dark text-white shadow-sm border-purple Cinput mb-3" style="border: 2px solid #99c3ff; ">
+                        <option value="">/root</option>
+                        {% macro render_options(folders, level=0) %}
+                        {% for folder in folders %}
+                            <option value="{{ folder.id }}">{{ '—' * level }} {{ folder.name }}</option>
+                            {{ render_options(folder.children, level + 1) }}
+                        {% endfor %}
+                        {% endmacro %}
+                        {{ render_options(folder_tree) }}
+                        </select>
+                    </li>
+                    <li><p>Select where you want your folder :)</p></li>
+                </ul>
+                <hr class="border-light mx-auto">
+                <button type="submit" class="btn btn-outline-light ">Create folder</button>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+{% endblock %}

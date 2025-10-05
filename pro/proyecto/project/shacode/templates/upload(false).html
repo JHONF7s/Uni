@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    upload
+{% endblock %}
+
+{% block main %}
+
+<div class="form-box bg-dark bg-opacity-75 shadow p-4 mx-auto mt-5" style="max-width: 800px; height: 400px; border-radius: 30px; border: 2px solid #538ada;">
+
+<div class="container text-white">
+  <h2 class="text-center"><strong>Mis Archivos</strong></h2>
+  <hr class="border-light mx-auto">
+
+  <!-- Crear carpeta -->
+  <form action="/create_folder" method="post" class="mb-3 d-flex">
+    <input type="text" name="folder_name" placeholder="Nombre de carpeta" class="form-control me-2" required>
+    <button type="submit" class="btn btn-outline-light">Crear carpeta</button>
+  </form>
+
+  <!-- Subir archivo -->
+  <form action="/upload" method="post" enctype="multipart/form-data" class="mb-4">
+    <input type="file" name="file" class="form-control mb-2" required>
+    <select name="folder_id" class="form-select mb-2">
+      <option value="">Raíz</option>
+      {% for folder in folders %}
+        <option value="{{ folder.id }}">{{ folder.name }}</option>
+      {% endfor %}
+    </select>
+    <button type="submit" class="btn btn-primary">Subir archivo</button>
+  </form>
+
+  <!-- Lista de archivos -->
+  <ul class="list-group">
+    {% for file in files %}
+      <li class="list-group-item bg-dark text-white d-flex justify-content-between align-items-center">
+        {{ file.filename }}
+        <a href="{{ url_for('download_file', file_id=file.id) }}" class="btn btn-sm btn-outline-light">Descargar</a>
+      </li>
+    {% endfor %}
+  </ul>
+</div>
+</div>
+{% endblock %}

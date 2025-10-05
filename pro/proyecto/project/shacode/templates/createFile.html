@@ -1,0 +1,163 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    upload
+{% endblock %}
+
+{% block main %}
+
+{% macro render_options(folders, level=0) %}
+    {% for folder in folders %}
+        <option value="{{ folder.id }}">{{ '—' * level }} {{ folder.name }}</option>
+        {{ render_options(folder.children, level + 1) }}
+    {% endfor %}
+{% endmacro %}
+
+
+{{ macros.render_sidebar() }}
+<div class="main-content" style=" width: 100%;">
+    <div class="container-fluid py-5 text-center" style="background-color: #2f3136;">
+        <h2 class="text-white"><strong>Create or upload a file</strong></h2>
+        <hr class="border-light mx-auto" style="width: 800px;">
+
+
+        <div class="form-box shadow bg-dark p-4 mx-auto mt-5 Cformulario" style=" width: 2000px;">
+            <button class="btn btn-sm btn-outline-light" type="button" data-bs-toggle="collapse" data-bs-target="#symbolSE"
+                style="height: 50px; max-width: 90px;">
+                    Upload a file >
+            </button>
+                <div class="collapse mt-2" id=symbolSE>
+                    <div class="form-box shadow p-4 mx-auto mt-5 Cformulario">
+                        <form action="/Cfile" method="post" enctype="multipart/form-data" class="mb-4">
+                            <h3 class="text-white"><strong>New file c:</strong></h3>
+                            <hr class="border-light mx-auto">
+                            <ul class="" style="list-style-type: none; padding-left: 0;">
+                                <li><div class=bg-dark> <input type="file" name="file" class="form-control mx-auto w-auto bg-light shadow-sm border-purple mb-3" required style="border: 5px solid #000000"></div></li>
+                                <li>
+                                    <select name="folder_id" class="form-select mx-auto w-50 bg-dark text-white shadow-sm border-purple Cinput mb-3" style="border: 2px solid #99c3ff;">
+                                        <option value="">/root</option>
+                                                {{ render_options(folder_tree) }}
+
+                                    </select>
+                                </li>
+                                <li><p>Select where you want to save this <strong>file</strong> :)</p></li>
+                            </ul>
+                            <p></p>
+                            <button type="submit" class="btn btn-primary">Upload file</button>
+                        </form>
+                    </div>
+                </div>
+                <div class=mt-5>
+                    <button class="btn btn-sm btn-outline-light" type="button" data-bs-toggle="collapse" data-bs-target="#cash"
+                        style="height: 50px; max-width: 90px;">
+                            Create a file >
+                    </button>
+                    <hr class="border-light mx-auto">
+                    <div class="collapse mt-2" id='cash'>
+                        <div class="form-box shadow p-4 mx-auto mt-5 Cformulario" >
+                        <form action="/create_file" method="post" class="mb-4 text-white">
+                            <ul class="" style="list-style-type: none; padding-left: 0;">
+                                <li><input autocomplete="off" autofocus type="text" name="filename" placeholder="Name of your file (NO extension)" class="form-control mx-auto w-auto bg-dark text-white shadow-sm border-purple Cinput mb-3" required>
+                                    <select id="languageSelect" name="mode"  class="form-select mx-auto w-50 bg-dark text-white shadow-sm border-purple Cinput mb-3" style="border: 2px solid #99c3ff;">
+                                        <option disabled selected>Select extension</option>
+                                        <option value="python">Python (.py)</option>
+                                        <option value="javascript">JavaScript (.js)</option>
+                                        <option value="htmlmixed">HTML (.html)</option>
+                                        <option value="css">CSS (.css)</option>
+                                        <option value="text/x-java">Java (.java)</option>
+                                        <option value="text/x-csrc">C (.c)</option>
+                                        <option value="text/x-c++src">C++ (.cpp)</option>
+                                        <option value="text/x-csharp">C# (.cs)</option>
+                                        <option value="php">PHP (.php)</option>
+                                        <option value="ruby">Ruby (.rb)</option>
+                                        <option value="go">Go (.go)</option>
+                                        <option value="rust">Rust (.rs)</option>
+                                        <option value="markdown">Markdown (.md)</option>
+                                        <option value="sql">SQL (.sql)</option>
+                                        <option value="shell">Shell / Bash (.sh)</option>
+                                        <option value="xml">XML (.xml)</option>
+                                        <option value="yaml">YAML (.yml, .yaml)</option>
+                                        <option value="json">JSON (.json)</option>
+                                        <option value="stex">LaTeX (.tex)</option>
+                                        <option value="perl">Perl (.pl)</option>
+                                        <option value="lua">Lua (.lua)</option>
+                                        <option value="swift">Swift (.swift)</option>
+                                        <option value="scala">Scala (.scala)</option>
+                                        <option value="kotlin">Kotlin (.kt)</option>
+                                        <option value="dart">Dart (.dart)</option>
+                                        <option value="haskell">Haskell (.hs)</option>
+                                        <option value="clojure">Clojure (.clj)</option>
+                                        <option value="elixir">Elixir (.ex)</option>
+                                        <option value="erlang">Erlang (.erl)</option>
+                                        <option value="mathematica">Mathematica (.nb)</option>
+                                        <option value="pascal">Pascal (.pas)</option>
+                                        <option value="vb">VB.NET (.vb)</option>
+                                        <option value="verilog">Verilog (.v)</option>
+                                        <option value="vhdl">VHDL (.vhd)</option>
+                                        <option value="nginx">Nginx (.conf)</option>
+                                        <option value="dockerfile">Dockerfile</option>
+                                        <option value="protobuf">ProtoBuf (.proto)</option>
+                                        <option value="tcl">Tcl (.tcl)</option>
+                                        <option value="twig">Twig (.twig)</option>
+                                        <option value="pug">Pug (.pug)</option>
+                                        <option value="handlebars">Handlebars (.hbs)</option>
+                                        <option value="sass">Sass (.sass)</option>
+                                        <option value="scss">SCSS (.scss)</option>
+                                        <option value="less">LESS (.less)</option>
+                                    </select>
+                                </li>
+                                <hr class="border-light mx-auto">
+                                <li><strong>Select where you want to create :)</strong></li>
+                                <li><p></p></li>
+                                <li>
+                                    <select name="folder_id" class="form-select mx-auto w-50 bg-dark text-white shadow-sm border-purple Cinput mb-3" style="border: 2px solid #99c3ff;">
+                                        <option value="">/root</option>
+                                        {{ render_options(folder_tree) }}
+                                    </select>
+                                </li>
+                            </ul>
+                            <p class=mb-2>At least put a comment :D</p>
+                            <div stle ="position: relative; width: 1000px;">
+                            <textarea id="editor" name="content"></textarea>
+                            </div>
+
+                            <script>
+                            const editor = CodeMirror.fromTextArea(document.getElementById("editor"), {
+                            lineNumbers: true,
+                            mode: "python", // Puedes cambiar dinámicamente según la extensión
+                            theme: "dracula",
+                            indentUnit: 4,
+                            tabSize: 4,
+                            autofocus: true
+                            });
+
+                            // Actualiza el modo según selección
+                            document.getElementById("languageSelect").addEventListener("change", function () {
+                            const selectedMode = this.value;
+                            editor.setOption("mode", selectedMode);
+                            editor.refresh();
+                            });
+
+
+                            // refrescar el editor en collapse
+                            const collapseElement = document.getElementById("cash");
+                            if (collapseElement){
+                                collapseElement.addEventListener('shown.bs.collapse', () => {
+                                    editor.refresh();
+                                });
+                            }
+                            </script>
+                            <p></p>
+                            <button type="submit" class="btn btn-success">Confirm</button>
+                        </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+{% endblock %}
+
+

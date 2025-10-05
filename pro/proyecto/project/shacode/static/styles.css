@@ -1,0 +1,265 @@
+/* Size for brand */
+nav .navbar-brand
+{
+    font-size: xx-large;
+}
+
+/* Colors for brand */
+nav .navbar-brand .blue
+{
+    color: #537fbe;
+}
+nav .navbar-brand .red
+{
+    color: #ea433b;
+}
+nav .navbar-brand .yellow
+{
+    color: #f5b82e;
+}
+nav .navbar-brand .green
+{
+    color: #2e944b;
+}
+
+.tb_name
+{
+    max-width: 180px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    background-color: rgba(255, 255, 155, 0.75);
+    backdrop-filter: blur(6px);
+    padding: 6px 12px;
+    /*border-radius: 0.75rem; */
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+/* index */
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body, html {
+      height: 100%;
+      font-family: sans-serif;
+      background-color: #2f3136;
+      margin: 0;
+      padding: 0;
+    }
+
+    .chat-container {
+      display: flex;
+      height: 100vh;
+      background-color: #343a40;
+    }
+
+    .toggle-btn {
+      align-self: flex-start;
+      margin: 10px;
+      z-index: 10;
+      font-size: 18px;
+      background: #202225;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      cursor: pointer;
+      border-radius: 4px;
+      position: relative; /* ya no es absolute */
+      margin-left: -20px; /* LISTA DE BOTONES */
+  }
+
+
+    /* izquierda */
+    .sidebar {
+      width: 150px;
+      background-color: #202225;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      transition: width 0.2s ease;
+      overflow-y: auto;
+    }
+
+    .sidebar ul {
+      list-style: none;
+      padding: 1em;
+    }
+
+    .main-content {
+      flex: 1;
+      
+      color: white;
+      overflow: auto;
+      height: 100vh;
+      background-color: #2f3136;
+      overflow-y: auto;
+    }
+
+    #resizer {
+      width: 5px;
+      cursor: col-resize;
+      background-color: rgba(255, 255, 255, 0.2);
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+
+/* inputs */
+input::placeholder {
+  color: white;
+  opacity: 1;
+}
+
+input::-webkit-input-placeholder {
+  color: white;
+}
+
+input:-moz-placeholder {
+  color: white;
+  opacity: 1;
+}
+
+input::-moz-placeholder {
+  color: white;
+  opacity: 1;
+}
+
+input:-ms-input-placeholder {
+  color: white;
+}
+
+.form-control::placeholder {
+  color: #cacaca;
+  opacity: 1;
+}
+
+
+/* CUADRO DE FORMULARIO */
+.Cformulario{
+  max-width: 500px;
+  background-color: rgba(54, 57, 63, 0.85);
+  backdrop-filter: blur(6px);
+  color: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  border-radius: 30px;
+}
+
+/* INPUT FORMULARIO */
+.Cinput{
+  border: 2px solid #99c3ff;
+}
+
+/* BUTTON */
+.Cbutton{
+  border: 2px solid #538ada;
+}
+
+
+/* ESTILO BARRA SCROLL */
+
+.sidebar::-webkit-scrollbar,
+.main-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.sidebar::-webkit-scrollbar-thumb,
+.main-content::-webkit-scrollbar-thumb {
+  background-color: #555;
+  border-radius: 4px;
+}
+
+.sidebar::-webkit-scrollbar-track,
+.main-content::-webkit-scrollbar-track {
+  background-color: #2f3136;
+}
+
+
+/* ESPACIO DE LAS LISTAS (quiza no tan necesario) */
+.sidebar ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.sidebar li {
+  padding: 0;
+  margin: 0;
+}
+
+
+
+
+
+/* textarea para codigo */
+
+.CodeMirror {
+  text-align: left;
+  padding-left: 5px !important;
+  padding-right: 0 !important;
+  box-sizing: border-box;
+  border-radius: 20px;
+  font-size: 12px;
+}
+
+.CodeMirror-gutters {
+  background-color: #2f3136; /* Para que se vea integrado con tu fondo */
+  color: #aaa;               /* Color de los numeritos */
+  border-right: 1px solid #444; /* Límite visual entre números y código */
+}
+
+
+
+
+
+
+/* CUADRO DE ARCHIVOS */
+.CARCHI{
+  max-width: 900px;
+  background-color: rgba(54, 57, 63, 0.85);
+  backdrop-filter: blur(6px);
+  color: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  border-radius: 30px;
+}
+
+
+/* desplazamiento horizontal*/
+.collapse-horizontal {
+    width: 0;
+    overflow: hidden;
+    transition: width 0.3s ease;
+}
+
+.collapse-horizontal.show {
+    width: 250px; /*  */
+}
+
+
+.filename-container {
+  /* Asegura que el contenedor no crezca más de lo debido */
+  max-width: 80%;
+
+  /* Oculta cualquier texto que se desborde del contenedor */
+  overflow: hidden;
+
+  /* Muestra puntos suspensivos (...) para el texto oculto */
+  text-overflow: ellipsis;
+
+  /* Impide que el texto se divida en varias lineas */
+  white-space: nowrap;
+}
+
+
+
+

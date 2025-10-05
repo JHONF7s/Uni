@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Quote
+{% endblock %}
+
+{% block main %}
+{{ macros.render_sidebar() }}
+<div class="main-content">
+    <div class="container-fluid py-5 text-center" style="background-color: #2f3136;">
+    <h2 class="text-white"><strong>Quote ⌕</strong></h2>
+    <hr class="border-light mx-auto" style="width: 800px;">
+        <div class="form-box shadow p-4 mx-auto mt-5 Cformulario">
+            <form action="/search_any" method="POST">
+                Try to be very specific in your search :)
+                <p></p>
+                <div class="mb-4">
+                    <input autocomplete="off" placeholder="Name or ID" autofocus class="form-control mx-auto w-auto bg-dark text-white shadow-sm border-purple Cinput"
+                    name="NID" type="text">
+                </div>
+                <button class="btn btn-primary Cbutton bg-dark" type="submit">Quote</button>
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+{% endblock %}

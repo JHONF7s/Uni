@@ -1,0 +1,47 @@
+ {% macro render_sidebar() %}
+ <link href="/static/styles.css" rel="stylesheet">
+ <div class="chat-container bg-dark">
+                <ul style="width: 35px;">
+                    <li><button class="toggle-btn" style="margin-left: -30px;" id="toggleBtn"><</button></li>
+                </ul>
+                    <div class="sidebar" id="sidebar">
+                    <ul>
+                        <li>
+                            <button class="btn btn-sm btn-outline-light" type="button" data-bs-toggle="collapse" data-bs-target="#juego"
+                            style="height: 50px; max-width: 90px;">
+                                <i class="bi bi-cloud-arrow-up"></i> Create your Files
+                            </button>
+                            <div class="collapse mt-2" id="juego">
+                                <div class=" rounded p-2 shadow-sm small" style="background-color: #2f3136;">
+                                    <a class=" btn btn-sm btn-outline-light " href="/Cfolder">Create Folder <i class="bi bi-folder"></i></i></a>
+                                    <p></p>
+                                    <a class="btn btn-sm btn-outline-light " href="/Cfile">Create/upload File <i class="bi bi-file-earmark"></i></a>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <button class=" mt-3 btn btn-sm btn-outline-light" type="button" data-bs-toggle="collapse" data-bs-target="#drive"style="height: 50px; max-width: 90px;">
+                                    view your files <i class="bi bi-cup-hot"></i>
+                            </button>
+                            <div class="collapse mt-2" id="drive">
+                                <div class=" rounded p-2 shadow-sm small" style="background-color: #2f3136;">
+                                    <a class="btn btn-sm btn-outline-light  " href="/drive">All your files <i class="bi bi-file-earmark-code"></i></a>
+                                    <p></p>
+                                    <a class="btn btn-sm btn-outline-light " href="/shares">Shared files <i class="bi bi-cursor-fill"></i></a>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <button class="mt-3 btn btn-sm btn-outline-light" type="button" onclick="window.location.href='/search_any';"
+                            style="height: 50px; max-width: 90px;">
+                            <i class="bi bi-person-lines-fill"></i> Search for anyone
+                            </button>
+                        </li>
+
+
+                        </ul>
+                        <div id="resizer"></div>
+                    </div>
+
+                <script src="/static/prueba.js"></script>
+                {% endmacro  %}

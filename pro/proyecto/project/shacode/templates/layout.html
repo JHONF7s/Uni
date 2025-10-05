@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="initial-scale=1, width=device-width">
+        <meta name="theme-color" content="#121212">
+        <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+        <script src="https://unpkg.com/diff-match-patch"></script>
+
+        <!--para comunicacion bidireccional-->
+
+        <!-- CodeMirror CSS -->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/theme/dracula.min.css">
+
+
+
+        <!-- CodeMirror JS -->
+
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/python/python.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/javascript/javascript.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/htmlmixed/htmlmixed.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/css/css.min.js"></script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/clike/clike.min.js"></script>
+
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/clike/clike.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/php/php.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/htmlmixed/htmlmixed.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.14/mode/shell/shell.min.js"></script>
+
+
+        <!-- http://getbootstrap.com/docs/5.3/ -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+        <!-- https://favicon.io/emoji-favicons/money-bag/ -->
+        <link href="/static/favicon.ico" rel="icon">
+
+        <link href="/static/styles.css" rel="stylesheet">
+        <script src="/static/prueba.js"></script>
+
+        {% import 'macros/sidebar.html' as macros%}
+
+        <title>ShaCode {% block title %}{% endblock %}</title>
+
+    </head>
+
+    <body style="display: flex;
+  flex-direction: column;
+  min-height: 100vh;">
+
+        <nav class="navbar navbar-expand-md navbar-dark bg-dark shadow-sm sticky-top">
+            <div class="container-fluid d-flex justify-content-between align-items-center" style="background-color: #2f3136;">
+                <div class="px-3 py-2 rounded shadow border" style="
+                            background-color: #36393f /*rgba(255, 255, 255, 0.75) */;
+                            backdrop-filter: blur(2px);
+                            box-shadow: 0 20px 20px rgba(0,0,0,0.2);
+                            height: 70px;
+                        /* border-radius: 10px; */
+                                                                    ">
+
+                    <a class="navbar-brand" href="/"><span class="white border"><stronger>S</stronger></span><span class="white bg-dark">H</span><span class="white bg-dark">A</span><span class=""></span> _[/]_ <span class="white bg-dark">Code𓐐𓎩 </span></a>
+                </div>
+                <button aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler" data-bs-target="#navbar" data-bs-toggle="collapse" type="button">
+                <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbar">
+
+
+                    {% if session["user_id"] %}
+                        <ul class="navbar-nav me-auto mt-2">
+                            <li class="nav-item"><a class="nav-link" href="/buy"></a>
+
+                            </li>
+                            <li class="nav-item"><a class="nav-link" href="/sell"></a>
+                            </li>
+                            <li class="nav-item"><a class="nav-link" href="/history"></a></li>
+
+
+                        </ul>
+                        <ul class="navbar-nav ms-auto mt-2">
+
+                            <li><p></p></li>
+                            <li class="nav-item">
+                                <a href="/messages" class="btn btn-light position-relative rounded-pill shadow-sm px-3 py-2"
+                                style="backdrop-filter: blur(6px); background-color: rgba(255,255,255,0.6);">
+                                    <i class="bi bi-envelope-fill"></i> Messages
+                                </a>
+                            </li>
+                            <li class="nav-item"><a class="nav-link" href="/profile">Profile <i class="bi bi-incognito"></i></a>
+                            </li>
+                            <li class="nav-item"><a class="nav-link" href="/settings">Settings <i class="bi bi-gear-fill"></i></a>
+                            </li>
+                        </ul>
+                    {% else %}
+                        <ul class="navbar-nav ms-auto mt-2">
+                            <li class="nav-item"><a class="nav-link" href="/register">Register</a></li>
+                            <li class="nav-item"><a class="nav-link" href="/login">Log In</a></li>
+                        </ul>
+                    {% endif %}
+                </div>
+            </div>
+        </nav>
+
+        {% if get_flashed_messages() %}
+            <header>
+                <div class="alert alert-primary mb-0 text-center bg-dark text-white" style="border: 2px solid #99c3ff;" role="alert">
+                    <strong>{{ get_flashed_messages() | join(" ") }}</strong>
+                </div>
+            </header>
+        {% endif %}
+        <!--se fue-->
+        <main cass="container py-5 text-center" style="flex: 1;">
+
+            {% block main %}
+
+            {% endblock %}
+
+        </main>
+
+        <footer class=" bg-dark"  >
+          
+        </footer>
+    </body>
+</html>

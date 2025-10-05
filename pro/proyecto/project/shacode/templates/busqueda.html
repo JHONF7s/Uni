@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Quoted
+{% endblock %}
+
+{% block main %}
+
+{{ macros.render_sidebar() }}
+<div class="main-content">
+    <div class="form-box bg-dark bg-opacity-75 shadow p-4 mx-auto mt-5" style="max-width: 500px; border-radius: 30px; border: 2px solid #538ada;">
+        <h2 class="text-white text-center"><strong>Result</strong></h2>
+        <hr class="border-light mx-auto">
+        <ul class="list-group" style="">
+            <li class="text-white list-group-item" style="background: #36393f;"><strong>Name:</strong> {{ name }}</li>
+            <li class="text-white list-group-item" style="background: #36393f;"><strong>ID:</strong> {{ id }}</li>
+        </ul>
+        <div class=mb-4>
+            <hr class="border-light mx-auto">
+            <p class="text-white"> The person with the name <strong>{{ name }}</strong> has the ID ({{ id }})</p>
+        </div>
+         <hr class="border-light mx-auto">
+        <div class="text-center">
+            <a class="btn btn-secondary mt-3" href="/search_any">look for another</a>
+        </div>
+    </div>
+</div>
+</div>
+{% endblock %}
+
